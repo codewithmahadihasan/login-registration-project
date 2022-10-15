@@ -4,6 +4,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   sendEmailVerification,
+  updateProfile,
 } from "firebase/auth";
 import app from "../Firebase/firebase.init";
 import Swal from "sweetalert2";
@@ -18,7 +19,7 @@ const Registar = () => {
   const handelToClick = (even) => {
     even.preventDefault();
     const target = even.target;
-    // const name = target.name.value;
+    const name = target.name.value;
     const email = target.email.value;
     const password = target.password.value;
     // if (email.toLowerCase() === email) {
@@ -39,6 +40,7 @@ const Registar = () => {
     } else {
       setPass("");
     }
+
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
@@ -53,6 +55,17 @@ const Registar = () => {
           // Email verification sent!
           // ...
         });
+        updateProfile(auth.currentUser, {
+          displayName: name,
+        })
+          .then(() => {
+            // Profile updated!
+            // ...
+          })
+          .catch((error) => {
+            // An error occurred
+            // ...
+          });
 
         console.log(user);
         setError("");
